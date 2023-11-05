@@ -7,7 +7,10 @@
 
 import get from "lodash.get";
 import set from "lodash.set";
-import faker from "faker";
+import { faker } from '@faker-js/faker';
+
+const randomName = faker.person.fullName(); // Rowan Nikolaus
+const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
 import SimpleSchema from "simpl-schema";
 
 SimpleSchema.extendOptions(["mockValue"]);
@@ -63,12 +66,12 @@ const createMock = (schema, prefix, addId) => {
 
       switch (fieldType) {
         case Date:
-          fieldValue = new Date(faker.random.number() * 1000);
+          fieldValue = new Date(faker.number.int() * 1000);
           break;
 
         case Number:
         case SimpleSchema.Integer:
-          fieldValue = defField.min || defField.max || faker.random.number();
+          fieldValue = defField.min || defField.max || faker.number.int();
           break;
 
         case String:
@@ -100,11 +103,11 @@ const createMock = (schema, prefix, addId) => {
                 break;
 
               case String(SimpleSchema.RegEx.Id):
-                fieldValue = faker.random.alphaNumeric(17);
+                fieldValue = faker.string.alphanumeric(17);
                 break;
 
               case String(SimpleSchema.RegEx.ZipCode):
-                fieldValue = faker.address.zipCode();
+                fieldValue = faker.location.zipCode();
                 break;
 
               case String(SimpleSchema.RegEx.Phone):
@@ -123,7 +126,7 @@ const createMock = (schema, prefix, addId) => {
           fieldValue =
             defField.defaultValue !== undefined
               ? defField.defaultValue
-              : faker.random.boolean();
+              : faker.datatype.boolean(0.5);
           break;
 
         case Object: {
@@ -147,7 +150,7 @@ const createMock = (schema, prefix, addId) => {
   });
 
   if (addId) {
-    mockDoc._id = faker.random.alphaNumeric(17);
+    mockDoc._id = faker.string.alphanumeric(17);
   }
 
   return mockDoc;
