@@ -25,6 +25,7 @@
   "dependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
+    "@faker-js/faker": "^8.2.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "simpl-schema": "^3.4.1"
@@ -42,7 +43,6 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-env": "^7.23.2",
-    "@faker-js/faker": "^8.2.0",
     "babel-core": "^7.0.0-bridge.0",
     "@babel/eslint-parser": "^7.22.15",
     "babel-jest": "^29.7.0",
