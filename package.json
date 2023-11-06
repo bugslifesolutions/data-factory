@@ -43,9 +43,8 @@
     "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@babel/preset-env": "^7.23.2",
     "@faker-js/faker": "^8.2.0",
-    "@reactioncommerce/eslint-config": "^2.4.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "^7.22.15",
     "babel-jest": "^29.7.0",
     "eslint": "^8.53.0",
     "eslint-plugin-import": "^2.25.3",
@@ -68,7 +67,8 @@
     "sourceMaps": true
   },
   "eslintConfig": {
-    "extends": "@reactioncommerce",
+    "plugins": ["node"],
+    "parser": "@babel/eslint-parser",
     "rules": {
       "node/no-unsupported-features/es-syntax": [
         "error",
