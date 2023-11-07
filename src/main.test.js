@@ -71,3 +71,8 @@ test("Create 4 mock documents from Factory with an iterated property value", () 
   expect(mockThings[2]._id).toEqual("102");
   expect(mockThings[3]._id).toEqual("103");
 });
+
+test("MakeOne creates Date field value", () => {
+  const mockThing = Factory.Thing.makeOne();
+  expect(mockThing.dateField instanceof Date).toEqual(true);
+});

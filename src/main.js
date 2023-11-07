@@ -66,7 +66,7 @@ const createMock = (schema, prefix, addId) => {
 
       switch (fieldType) {
         case Date:
-          fieldValue = faker.date.anytime;
+          fieldValue = faker.date.anytime();
           break;
 
         case Number:
