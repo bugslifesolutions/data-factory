@@ -28,7 +28,7 @@
     "@faker-js/faker": "^8.2.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
-    "simpl-schema": "^1.13.1"
+    "simpl-schema": "^1.5.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
