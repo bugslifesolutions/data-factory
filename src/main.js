@@ -69,8 +69,11 @@ const createMock = (schema, prefix, addId) => {
           fieldValue = faker.date.anytime();
           break;
 
-        case Number:
         case SimpleSchema.Integer:
+          fieldValue = defField.min || defField.max || faker.number.int({ min: 0, max: Math.pow(2, 32) });
+          break;
+
+        case Number:
           fieldValue = defField.min || defField.max || faker.number.int();
           break;
 

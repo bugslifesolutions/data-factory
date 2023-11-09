@@ -16,6 +16,17 @@ const Thing = new SimpleSchema({
   },
   stringField: {
     type: String
+  },
+  integerField: {
+    type: SimpleSchema.Integer
+  },
+  largeNumberField: {
+    type: Number,
+    min: Math.pow(2,32) + 1
+  },
+  integerLargeMinField: {
+    type: SimpleSchema.Integer,
+    min: Math.pow(2,32) + 1
   }
 });
 
@@ -45,6 +56,7 @@ test("Create a mock document from Factory", () => {
   expect(mockThing).toHaveProperty("numberField");
   expect(mockThing).toHaveProperty("objectField");
   expect(mockThing).toHaveProperty("stringField", "mockStringField");
+  expect(mockThing).toHaveProperty("integerField");
 });
 
 // create mock document with custom prop
@@ -75,4 +87,20 @@ test("Create 4 mock documents from Factory with an iterated property value", () 
 test("MakeOne creates Date field value", () => {
   const mockThing = Factory.Thing.makeOne();
   expect(mockThing.dateField instanceof Date).toEqual(true);
+});
+
+test("MakeOne fakes SimpleSchema.Integer values between 0 and 2^32", () => {
+  const mockThing = Factory.Thing.makeOne();
+  expect(mockThing.integerField).toBeGreaterThanOrEqual(0);
+  expect(mockThing.integerField).toBeLessThanOrEqual(Math.pow(2,32));
+});
+
+test("MakeOne SimpleSchema.Integer respects optional min and/or max even when > 2^32", () => {
+  const mockThing = Factory.Thing.makeOne();
+  expect(mockThing.integerLargeMinField).toBeGreaterThanOrEqual(Math.pow(2,32));
+});
+
+test("MakeOne Number may exceed 2^32", () => {
+  const mockThing = Factory.Thing.makeOne();
+  expect(mockThing.largeNumberField).toBeGreaterThanOrEqual(Math.pow(2,32));
 });
