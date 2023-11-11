@@ -8,6 +8,7 @@
 import get from "lodash.get";
 import set from "lodash.set";
 import { faker } from "@faker-js/faker";
+import RandExp from "randexp";
 
 const randomName = faker.person.fullName(); // Rowan Nikolaus
 const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
@@ -81,47 +82,7 @@ const createMock = (schema, prefix, addId) => {
           fieldValue = `${docPrefix}${key.replace(/^\w/, (char) =>
             char.toUpperCase())}`;
           if (defField.regEx) {
-            switch (String(defField.regEx)) {
-              case String(String(SimpleSchema.RegEx.Email)):
-              case String(String(SimpleSchema.RegEx.EmailWithTLD)):
-                fieldValue = faker.internet.email();
-                break;
-
-              case String(SimpleSchema.RegEx.Domain):
-              case String(SimpleSchema.RegEx.WeakDomain):
-                fieldValue = `${faker.internet.domainName()}${faker.internet.domainWord()}`;
-                break;
-
-              case String(SimpleSchema.RegEx.IP):
-              case String(SimpleSchema.RegEx.IPv4):
-                fieldValue = faker.internet.ip();
-                break;
-
-              case String(SimpleSchema.RegEx.IPv6):
-                fieldValue = faker.internet.ipv6();
-                break;
-
-              case String(SimpleSchema.RegEx.Url):
-                fieldValue = faker.internet.url();
-                break;
-
-              case String(SimpleSchema.RegEx.Id):
-                fieldValue = faker.string.alphanumeric(17);
-                break;
-
-              case String(SimpleSchema.RegEx.ZipCode):
-                fieldValue = faker.location.zipCode();
-                break;
-
-              case String(SimpleSchema.RegEx.Phone):
-                fieldValue = key.match(/mobile/i)
-                  ? faker.phone.phoneNumber("074## ######")
-                  : faker.phone.phoneNumber("012## ######");
-                break;
-
-              default:
-                break;
-            }
+              fieldValue = new RandExp(defField.regEx).gen();
           }
           break;
 

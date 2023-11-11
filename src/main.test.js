@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import { createFactoryForSchema, Factory } from "./main.js";
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 const Thing = new SimpleSchema({
   booleanField: {
     type: Boolean
@@ -27,6 +28,10 @@ const Thing = new SimpleSchema({
   integerLargeMinField: {
     type: SimpleSchema.Integer,
     min: Math.pow(2,31) + 1
+  },
+  regexField: {
+    type: String,
+    regEx: EMAIL_REGEX
   }
 });
 
@@ -103,4 +108,9 @@ test("MakeOne SimpleSchema.Integer respects optional min and/or max even when > 
 test("MakeOne Number may exceed 2^32", () => {
   const mockThing = Factory.Thing.makeOne();
   expect(mockThing.largeNumberField).toBeGreaterThanOrEqual(Math.pow(2,31));
+});
+
+test("MakeOne uses Regex", () => {
+  const mockThing = Factory.Thing.makeOne();
+  expect(mockThing.regexField).toMatch(EMAIL_REGEX);
 });
