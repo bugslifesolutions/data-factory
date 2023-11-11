@@ -7,7 +7,7 @@
 
 import get from "lodash.get";
 import set from "lodash.set";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 const randomName = faker.person.fullName(); // Rowan Nikolaus
 const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
@@ -70,7 +70,7 @@ const createMock = (schema, prefix, addId) => {
           break;
 
         case SimpleSchema.Integer:
-          fieldValue = defField.min || defField.max || faker.number.int({ min: 0, max: Math.pow(2, 32) });
+          fieldValue = defField.min || defField.max || faker.number.int({min:0, max: Math.pow(2,31)});
           break;
 
         case Number:

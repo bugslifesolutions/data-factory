@@ -22,11 +22,11 @@ const Thing = new SimpleSchema({
   },
   largeNumberField: {
     type: Number,
-    min: Math.pow(2,32) + 1
+    min: Math.pow(2,31) + 1
   },
   integerLargeMinField: {
     type: SimpleSchema.Integer,
-    min: Math.pow(2,32) + 1
+    min: Math.pow(2,31) + 1
   }
 });
 
@@ -89,18 +89,18 @@ test("MakeOne creates Date field value", () => {
   expect(mockThing.dateField instanceof Date).toEqual(true);
 });
 
-test("MakeOne fakes SimpleSchema.Integer values between 0 and 2^32", () => {
+test("MakeOne fakes SimpleSchema.Integer values between 0 and 2^31", () => {
   const mockThing = Factory.Thing.makeOne();
   expect(mockThing.integerField).toBeGreaterThanOrEqual(0);
-  expect(mockThing.integerField).toBeLessThanOrEqual(Math.pow(2,32));
+  expect(mockThing.integerField).toBeLessThanOrEqual(Math.pow(2,31));
 });
 
-test("MakeOne SimpleSchema.Integer respects optional min and/or max even when > 2^32", () => {
+test("MakeOne SimpleSchema.Integer respects optional min and/or max even when > 2^31", () => {
   const mockThing = Factory.Thing.makeOne();
-  expect(mockThing.integerLargeMinField).toBeGreaterThanOrEqual(Math.pow(2,32));
+  expect(mockThing.integerLargeMinField).toBeGreaterThanOrEqual(Math.pow(2,31));
 });
 
 test("MakeOne Number may exceed 2^32", () => {
   const mockThing = Factory.Thing.makeOne();
-  expect(mockThing.largeNumberField).toBeGreaterThanOrEqual(Math.pow(2,32));
+  expect(mockThing.largeNumberField).toBeGreaterThanOrEqual(Math.pow(2,31));
 });
