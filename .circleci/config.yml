@@ -6,19 +6,20 @@ machine: &machine
     - image: node:18.18.2
 
 install_dependencies: &install_dependencies
-  - run:
-      name: Install pnpm package manager
-      command: sudo npm i -g pnpm@7.11.0
-  - restore_cache:
-      keys:
-      - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-      # fallback to using the latest cache if no exact match is found
-      - v1-dependencies-
-  - run: pnpm install
-  - save_cache:
-      paths:
-        - node_modules
-      key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+  - steps:
+    - run:
+        name: Install pnpm package manager
+        command: sudo npm i -g pnpm@7.11.0
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+    - run: pnpm install
+    - save_cache:
+        paths:
+          - node_modules
+        key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
 
 jobs:
   build:
