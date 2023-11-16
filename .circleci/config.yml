@@ -5,36 +5,35 @@ machine: &machine
   docker:
     - image: node:18.18.2
 
-install_dependencies: &install_dependencies
-  - steps:
-    - run:
-        name: Install pnpm package manager
-        command: sudo npm i -g pnpm@7.11.0
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-    - run: pnpm install
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+commands:
+  setup:
+    steps:
+      - checkout
+      - run:
+          name: Install pnpm package manager
+          command: sudo npm i -g pnpm@7.11.0
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
+          - v1-dependencies-
+      - run: pnpm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "pnpm-lock.yaml" }}
 
 jobs:
   build:
     <<: *machine
     steps:
-      - checkout
-      - <<: *install_dependencies
+      - setup
       - run: pnpm run lint
       - run: pnpm run test
 
   deploy:
     <<: *machine
     steps:
-      - checkout
-      - <<: *install_dependencies
+      - setup
       - run: pnpm run build
       - run:
           name: Authenticate with registry
