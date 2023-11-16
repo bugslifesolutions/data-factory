@@ -29,7 +29,8 @@
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "randexp": "^0.5.3",
-    "simpl-schema": "^3.4.1"
+    "simpl-schema": "~3.2.0",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
@@ -85,5 +86,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "pnpm": {
+    "overrides": {
+      "mongo-object": "npm:bls-mongo-object@1.0.0"
+    }
   }
 }

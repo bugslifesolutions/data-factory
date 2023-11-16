@@ -1,51 +1,45 @@
 
-version: 2
+version: 2.1
+
+machine: &machine
+  docker:
+    - image: node:18.18.2
+
+install_dependencies: &install_dependencies
+  - checkout
+  - run:
+      name: Install pnpm package manager
+      command: sudo npm i -g pnpm@7.11.0
+  - restore_cache:
+      keys:
+      - v1-dependencies-{{ checksum "package.json" }}
+      # fallback to using the latest cache if no exact match is found
+      - v1-dependencies-
+  - run: pnpm install
+
 jobs:
   build:
-    docker:
-      - image: node:18.18.2
-
-    dependencies:
-      pre:
-        - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
+    <<: *machine
     steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: npm install
-      - run: npm run lint
-      - run: npm run test
-
+      - <<: *install_dependencies
+      - run: pnpm run lint
+      - run: pnpm run test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
   deploy:
-    docker:
-      - image: node:18.18.2
-
+    <<: *machine
     steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: npm install
-      - run: npm run build
+      - <<: *install_dependencies
+      - run: pnpm run build
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: npx semantic-release
 
 workflows:
-  version: 2
   build_deploy:
     jobs:
       - build:
